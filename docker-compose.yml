@@ -1,0 +1,19 @@
+services:
+  hearing-bench:
+    build: .
+    container_name: hearing-bench
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    environment:
+      # 三种角色的初始密码（仅在数据库首次初始化时生效）
+      PASSWORD_RECORDIST: "${PASSWORD_RECORDIST:-recordist}"
+      PASSWORD_REVIEWER: "${PASSWORD_REVIEWER:-reviewer}"
+      PASSWORD_PARTICIPANT: "${PASSWORD_PARTICIPANT:-participant}"
+      # 数据库文件名（位于 /data 内）与容器内监听端口
+      DB_FILE: "${DB_FILE:-hearing.db}"
+    volumes:
+      - bench-data:/data
+
+volumes:
+  bench-data:
